@@ -27,11 +27,13 @@ class ProductRecommendationRepository {
         );
 
         List<ProductRecommendation> result = jdbcTemplate.query(
-                "SELECT pr.id, pr.product_id1, pr.product_id2 " +
-                        "FROM product_recommendation pr " +
-                        "LEFT JOIN not_recommendation_temp nrt " +
-                        "ON pr.product_id1 = nrt.id " +
-                        "WHERE nrt.id IS NULL",
+                """
+                SELECT pr.id, pr.product_id1, pr.product_id2 
+                FROM product_recommendation pr 
+                LEFT JOIN not_recommendation_temp nrt 
+                ON pr.product_id1 = nrt.id 
+                WHERE nrt.id IS NULL
+                """,
                 (rs, rowNum) -> new ProductRecommendation(
                         rs.getInt("id"),
                         rs.getInt("product_id1"),
