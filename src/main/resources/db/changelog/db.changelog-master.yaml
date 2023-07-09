@@ -1,0 +1,64 @@
+databaseChangeLog:
+  - changeSet:
+      id: 09-07-2023-01
+      author: vsverchkov
+      changes:
+        - createTable:
+            tableName: product
+            columns:
+              - column:
+                  name: id
+                  type: serial
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+      rollback:
+        - dropTable:
+            tableName: product
+
+  - changeSet:
+      id: 09-07-2023-02
+      author: vsverchkov
+      changes:
+        - createTable:
+            tableName: product_recommendation
+            columns:
+              - column:
+                  name: id
+                  type: serial
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: product_id1
+                  type: serial
+                  constraints:
+                    nullable: false
+              - column:
+                  name: product_id2
+                  type: int
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: product_recommendation
+            baseColumnNames: product_id1
+            referencedTableName: product
+            referencedColumnNames: id
+            constraintName: product_recommendation_product_id1_fk
+        - addForeignKeyConstraint:
+            baseTableName: product_recommendation
+            baseColumnNames: product_id2
+            referencedTableName: product
+            referencedColumnNames: id
+            constraintName: product_recommendation_product_id2_fk
+
+      rollback:
+        - dropTable:
+            tableName: product_recommendation
+
+
